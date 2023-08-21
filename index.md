@@ -1,37 +1,60 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Academic Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your Name</h1>
+        <p>Academic Profile</p>
+    </header>
 
-You can use the [editor on GitHub](https://github.com/baogiadoan/baogiadoan.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+    <nav>
+        <ul>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Welcome to my academic profile website. I am a passionate researcher...</p>
+        </section>
 
-### Markdown
+        <section id="research">
+            <h2>Research</h2>
+            <p>I am interested in a wide range of research topics...</p>
+        </section>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+        <section id="publications">
+            <h2>Publications</h2>
+            <ul>
+                <li>Publication 1</li>
+                <li>Publication 2</li>
+                <!-- Add more publications here -->
+            </ul>
+        </section>
 
-```markdown
-Syntax highlighted code block
+        <section id="education">
+            <h2>Education</h2>
+            <p>I hold a PhD in Computer Science from...</p>
+        </section>
 
-# Header 1
-## Header 2
-### Header 3
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Feel free to contact me at <a href="mailto:your.email@example.com">your.email@example.com</a>.</p>
+        </section>
+    </main>
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/baogiadoan/baogiadoan.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+    <footer>
+        <p>&copy; 2023 Your Name</p>
+    </footer>
+</body>
+</html>
