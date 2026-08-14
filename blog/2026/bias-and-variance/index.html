@@ -1,0 +1,199 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Bias and Variance: Understanding Underfitting and Overfitting | Dr. Bao Gia Doan </title> <meta name="author" content="Bao Gia Doan"> <meta name="description" content="How bias, variance, and Bayes error explain a model's generalization error—and what training and validation results can tell us."> <meta name="keywords" content="trustworthy AI, adversarial machine learning, machine learning security, retrieval-augmented generation, RAG, large language models"> <meta property="og:site_name" content="Dr. Bao Gia Doan"> <meta property="og:type" content="article"> <meta property="og:title" content="Dr. Bao Gia Doan | Bias and Variance: Understanding Underfitting and Overfitting"> <meta property="og:url" content="https://www.baodoan.net/blog/2026/bias-and-variance/"> <meta property="og:description" content="How bias, variance, and Bayes error explain a model's generalization error—and what training and validation results can tell us."> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Bias and Variance: Understanding Underfitting and Overfitting"> <meta name="twitter:description" content="How bias, variance, and Bayes error explain a model's generalization error—and what training and validation results can tell us."> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Bao Gia Doan"
+        },
+        "url": "https://www.baodoan.net/blog/2026/bias-and-variance/",
+        "@type": "BlogPosting",
+        "description": "How bias, variance, and Bayes error explain a model's generalization error—and what training and validation results can tell us.",
+        "headline": "Bias and Variance: Understanding Underfitting and Overfitting",
+        
+        "sameAs": [null,"https://github.com/baogiadoan","https://www.linkedin.com/in/baogiadoan","https://scholar.google.com/citations?user=IKf830cAAAAJ","https://twitter.com/baogiadoan"],
+        
+        "name": "Bao Gia Doan",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A4%96&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://www.baodoan.net/blog/2026/bias-and-variance/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link rel="stylesheet" href="/assets/al_email_protect/css/email-protect.css"> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Dr. Bao Gia Doan </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/teaching/">teaching </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/contacts/">contact </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Bias and Variance: Understanding Underfitting and Overfitting</h1> <p class="post-meta"> Created on August 13, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/machine-learning"> <i class="fa-solid fa-hashtag fa-sm"></i> machine-learning</a>   <a href="/blog/tag/fundamentals"> <i class="fa-solid fa-hashtag fa-sm"></i> fundamentals</a>   <a href="/blog/tag/bias-variance"> <i class="fa-solid fa-hashtag fa-sm"></i> bias-variance</a>   <a href="/blog/tag/tutorial"> <i class="fa-solid fa-hashtag fa-sm"></i> tutorial</a>   ·   <a href="/blog/category/ml-basics-and-concepts"> <i class="fa-solid fa-tag fa-sm"></i> ML Basics and Concepts</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-learning-setup">The learning setup</a></li> <li class="toc-entry toc-h2"><a href="#bias-error-from-restrictive-assumptions">Bias: error from restrictive assumptions</a></li> <li class="toc-entry toc-h2"><a href="#variance-error-from-sensitivity-to-the-sample">Variance: error from sensitivity to the sample</a></li> <li class="toc-entry toc-h2"><a href="#the-biasvariance-trade-off">The bias–variance trade-off</a></li> <li class="toc-entry toc-h2"><a href="#a-practical-diagnosis">A practical diagnosis</a></li> <li class="toc-entry toc-h2"><a href="#bayes-error-the-ideal-classifiers-limit">Bayes error: the ideal classifier’s limit</a></li> <li class="toc-entry toc-h2"> <a href="#why-bayes-error-can-only-be-estimated">Why Bayes error can only be estimated</a> <ul> <li class="toc-entry toc-h3"><a href="#fit-a-calibrated-probabilistic-model">Fit a calibrated probabilistic model</a></li> <li class="toc-entry toc-h3"><a href="#estimate-class-conditional-densities">Estimate class-conditional densities</a></li> <li class="toc-entry toc-h3"><a href="#repeated-labels-and-human-level-performance">Repeated labels and human-level performance</a></li> <li class="toc-entry toc-h3"><a href="#use-strong-models-as-a-practical-proxy">Use strong models as a practical proxy</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#reducible-and-irreducible-error">Reducible and irreducible error</a></li> <li class="toc-entry toc-h2"><a href="#takeaways">Takeaways</a></li> </ul> </div> <hr> <div id="markdown-content"> <p><em>This is the first post in the <a href="/blog/2026/ml-basics-and-concepts-series/">ML Basics and Concepts series</a>.</em></p> <p>A machine learning model must do more than fit its training data. It must learn a pattern that continues to work on examples it has never seen. Bias and variance describe two different ways this can go wrong:</p> <ul> <li> <strong>High bias</strong> means the model is too restricted to capture the relevant pattern. It <strong>underfits</strong>.</li> <li> <strong>High variance</strong> means the model is too sensitive to the particular training sample. It <strong>overfits</strong>.</li> </ul> <p>The best model is not necessarily the most complex one or the one with the lowest training error. It is the model that generalizes best to the data we will encounter after training.</p> <blockquote> <p>Here, <strong>bias</strong> means statistical bias in a learning procedure. It is different from social or demographic bias in data and model predictions.</p> </blockquote> <h2 id="the-learning-setup">The learning setup</h2> <p>Suppose examples are drawn from an unknown distribution</p> \[(X,Y) \sim P(X,Y),\] <p>and a training set $D$ is sampled from this distribution. A learning algorithm uses $D$ to produce a predictor $\hat f_D$. If we drew a different training set, we would generally obtain a different predictor.</p> <p>This gives us two questions:</p> <ol> <li>On average, how far is the learned prediction from the true relationship?</li> <li>How much does the learned prediction change when the training sample changes?</li> </ol> <p>The first question is about <strong>bias</strong>. The second is about <strong>variance</strong>.</p> <h2 id="bias-error-from-restrictive-assumptions">Bias: error from restrictive assumptions</h2> <p>Bias measures the systematic error introduced by the assumptions of the model and learning algorithm. A high-bias model cannot represent the important structure in the data, even when it is trained correctly.</p> <p>Imagine fitting a straight line to a relationship that is strongly curved. More data will locate the best straight line more precisely, but it will not make that line curved. The model class itself is too restrictive.</p> <p>Typical signs of high bias are:</p> <ul> <li>training error is high;</li> <li>validation error is also high;</li> <li>the gap between training and validation error is relatively small;</li> <li>increasing the amount of training data produces little improvement.</li> </ul> <p>High bias is therefore associated with <strong>underfitting</strong>.</p> <p>Possible responses include using a richer model, constructing more informative features, reducing excessive regularization, or fixing an optimization problem that prevents the model from fitting even the training data.</p> <h2 id="variance-error-from-sensitivity-to-the-sample">Variance: error from sensitivity to the sample</h2> <p>Variance measures how much the learned predictor would change if it were trained on a different dataset sampled from the same population. A high-variance model learns not only the underlying pattern but also accidental details and noise in its training sample.</p> <p>A very flexible curve may pass through every training point while behaving unpredictably between those points. Its training error can be extremely low, yet its error on new data can be much higher.</p> <p>Typical signs of high variance are:</p> <ul> <li>training error is low;</li> <li>validation error is substantially higher;</li> <li>performance changes noticeably across folds, random seeds, or resampled datasets;</li> <li>adding representative training data improves validation performance.</li> </ul> <p>High variance is therefore associated with <strong>overfitting</strong>.</p> <p>Possible responses include collecting more representative data, strengthening regularization, simplifying the model, using data augmentation, stopping training earlier, or averaging several models through an ensemble.</p> <h2 id="the-biasvariance-trade-off">The bias–variance trade-off</h2> <p>For squared-error regression, the expected prediction error at an input $x$ has the familiar decomposition</p> \[\mathbb{E}_D\!\left[(Y-\hat f_D(x))^2\mid X=x\right] = \operatorname{Bias}(x)^2 + \operatorname{Variance}(x) + \sigma^2(x),\] <p>where</p> \[\operatorname{Bias}(x) = \mathbb{E}_D[\hat f_D(x)]-f(x),\] <p>and</p> \[\operatorname{Variance}(x) = \mathbb{E}_D\!\left[ \left(\hat f_D(x)-\mathbb{E}_D[\hat f_D(x)]\right)^2 \right].\] <p>and $\sigma^2(x)$ is irreducible noise in $Y$ given $X=x$.</p> <p>Increasing model flexibility often reduces bias because the model can represent more complex patterns. The same flexibility can increase variance because the fitted model has more ways to respond to fluctuations in a finite training set. Regularization moves in the opposite direction: it usually increases bias while reducing variance.</p> <p>The trade-off is not a law that one side must always worsen when the other improves. Better features, a more appropriate inductive bias, or more representative data can improve both. It is nevertheless a useful way to diagnose errors.</p> <p>For classification and other losses, the clean squared-error equation does not carry over unchanged. Bias and variance remain useful concepts, but their exact decomposition depends on the loss and the definition being used.</p> <h2 id="a-practical-diagnosis">A practical diagnosis</h2> <p>Training and validation errors provide a useful first check:</p> <table> <thead> <tr> <th>Observation</th> <th>Likely problem</th> <th>Useful next step</th> </tr> </thead> <tbody> <tr> <td>High training error and high validation error</td> <td>High bias / underfitting</td> <td>Increase suitable capacity, improve features, or reduce excessive regularization</td> </tr> <tr> <td>Low training error and much higher validation error</td> <td>High variance / overfitting</td> <td>Add data or augmentation, regularize, simplify, or ensemble</td> </tr> <tr> <td>Low training and validation error</td> <td>Good fit on the current distribution</td> <td>Test robustness, calibration, and distribution shift</td> </tr> <tr> <td>High training error despite a powerful model</td> <td>Optimization or data problem may dominate</td> <td>Check labels, preprocessing, loss, learning rate, and convergence</td> </tr> </tbody> </table> <p>These are diagnostics, not proofs. A validation set drawn from the wrong distribution can hide both underfitting and overfitting. Label leakage can make validation error look excellent while real deployment performance is poor.</p> <h2 id="bayes-error-the-ideal-classifiers-limit">Bayes error: the ideal classifier’s limit</h2> <p>Even with unlimited data and a sufficiently capable model, classification error may not be zero. The input can be ambiguous, relevant information can be missing, labels can be noisy, or the outcome itself can be stochastic.</p> <p>Assume we know the true conditional distribution $P(Y\mid X)$. Under 0–1 loss, the <strong>Bayes classifier</strong> predicts the most probable class:</p> \[f^*(x)=\arg\max_y P(Y=y\mid X=x).\] <p>Its expected error is the <strong>Bayes error</strong> or <strong>Bayes risk</strong>:</p> \[R^* = \mathbb{E}_X\left[1-\max_y P(Y=y\mid X)\right].\] <p>No classifier using the same input $X$, evaluated on the same distribution with the same 0–1 loss, can achieve a lower expected error. Bayes error is therefore the theoretical <strong>lower bound</strong> for that learning problem.</p> <p>The qualification “using the same input” matters. Suppose two classes look identical in an image but can be distinguished with an additional sensor. The image-only task can have positive Bayes error even though the richer task does not. What appears to be irreducible error may be uncertainty created by an incomplete representation of the world.</p> <h2 id="why-bayes-error-can-only-be-estimated">Why Bayes error can only be estimated</h2> <p>In real problems, we do not know the true $P(Y\mid X)$. We only observe a finite sample from the world, so we generally cannot compute $R^*$ exactly. We can only construct proxies.</p> <h3 id="fit-a-calibrated-probabilistic-model">Fit a calibrated probabilistic model</h3> <p>A direct approach is to train a probabilistic classifier—such as logistic regression or a neural network with a softmax output—to estimate</p> \[\widehat P(Y\mid X)=P(Y\mid X,\theta),\] <p>where $\theta$ is learned from data. Given a large independent test set ${x_i}_{i=1}^N$, we can form the plug-in estimate</p> \[\widehat R_{\text{plugin}} = \frac{1}{N}\sum_{i=1}^N \left(1-\max_y \widehat P(Y=y\mid x_i)\right).\] <p>This is intuitive for deep learning because the model already outputs an estimated class distribution. It is reliable only when those probabilities are close to the true conditional probabilities. Good calibration is important: a model that reports 90% confidence should be correct roughly 90% of the time on comparable examples. Calibration alone is not sufficient, however, because aggregate calibration can hide large local errors in $\widehat P(Y\mid X=x)$.</p> <p>The test set must also be independent and representative of the deployment distribution. Otherwise, the estimate describes the wrong prediction problem.</p> <h3 id="estimate-class-conditional-densities">Estimate class-conditional densities</h3> <p>For a simpler low-dimensional problem, we can estimate each class-conditional density $p(x\mid Y=k)$ and the class prior $P(Y=k)$. Bayes’ rule then gives</p> \[P(Y=k\mid x) = \frac{p(x\mid Y=k)P(Y=k)} {\sum_j p(x\mid Y=j)P(Y=j)}.\] <p>Once this posterior has been estimated, it can be inserted into the Bayes-risk formula. Gaussian density models, kernel density estimation, and nearest-neighbor probability estimates are possible choices.</p> <p>This approach becomes difficult in high-dimensional spaces. Density estimation in image or language input spaces usually requires an enormous amount of data and strong modeling assumptions, so the resulting Bayes-error estimate can be dominated by density-estimation error.</p> <h3 id="repeated-labels-and-human-level-performance">Repeated labels and human-level performance</h3> <p>Collecting several independent labels for the same input gives more information than forcing a single “ground-truth” label. If 90 out of 100 reliable annotators label an example as class A and 10 label it as class B, we might estimate</p> \[P(A\mid x)\approx 0.9, \qquad P(B\mid x)\approx 0.1.\] <p>The estimated local Bayes error for that example is then</p> \[1-\max\{0.9,0.1\}=0.1.\] <p>This interpretation assumes that the variation in labels reflects genuine conditional uncertainty. Annotators can instead share systematic mistakes, use different labeling rules, or lack relevant context. Clear instructions, reliable annotators, independent judgments, and adjudication are therefore important.</p> <p>Human error is not the formal Bayes lower bound: people can make systematic mistakes, and a classifier may outperform them. It is better understood as a practical measure of task difficulty. Repeated disagreement can reveal ambiguity, missing information, or label noise, while expert consensus can expose errors in the dataset labels.</p> <h3 id="use-strong-models-as-a-practical-proxy">Use strong models as a practical proxy</h3> <p>In modern high-dimensional problems, exact estimation is usually impossible. If several powerful model families trained on large datasets converge to roughly the same test error, their performance provides a useful practical reference. For any particular classifier $h$,</p> \[R^*\leq R(h).\] <p>The same applies to the strongest model we have trained:</p> \[R^*\leq R(h_{\text{best}}).\] <p>If the best network obtains 3% test error, then—after accounting for finite-test-set uncertainty—we have evidence that $R^*$ is no greater than approximately 3%. We cannot conclude that the Bayes error is exactly 3%.</p> <p>However, this achieved error is normally an <strong>upper bound</strong> on Bayes error, not proof of the lower bound: the model can still have approximation error, estimation error, optimization error, or distribution mismatch. A larger model is a better proxy only when its predictions are supported by sufficient data and evaluated properly.</p> <p>None of these approaches recovers the true world model from limited data. They give increasingly useful approximations to the best achievable performance under a clearly defined input, target, distribution, and loss.</p> <h2 id="reducible-and-irreducible-error">Reducible and irreducible error</h2> <p>A helpful conceptual summary is</p> \[\text{generalization error} \approx \text{Bayes error} + \text{approximation error} + \text{estimation error} + \text{optimization error}.\] <p>This is a conceptual accounting for classification, not a universal exact additive identity.</p> <ul> <li> <strong>Bayes error</strong> is irreducible without changing the information, target, loss, or data-generating process.</li> <li> <strong>Approximation error</strong> arises when the model family cannot represent a sufficiently good decision rule; it is closely related to high bias.</li> <li> <strong>Estimation error</strong> arises because the learner sees only finite data; it is closely related to high variance.</li> <li> <strong>Optimization error</strong> arises when training fails to find the best available model in the chosen family.</li> </ul> <p>This distinction prevents a common mistake: blaming every stubborn error on model capacity. Sometimes a model underfits. Sometimes it overfits. Sometimes training is poor. And sometimes the input simply does not contain enough information to determine the label reliably.</p> <h2 id="takeaways">Takeaways</h2> <ul> <li>High bias usually appears as underfitting: both training and validation errors stay high.</li> <li>High variance usually appears as overfitting: training error is low but validation error is much higher.</li> <li>Model capacity, regularization, data quantity, and inductive bias determine where a learner sits between these two failure modes.</li> <li>Bayes error is the theoretical lower bound for a fixed prediction problem, but the true $P(Y\mid X)$ is unknown in practice.</li> <li>Strong models, reliable human annotators, and repeated labels can provide useful proxies for task difficulty, but their observed errors are not themselves proofs of the Bayes lower bound.</li> </ul> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/ml-basics-and-concepts-series/">The ML Basics and Concepts Series</a> </li> </ul> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Bao Gia Doan. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="external nofollow noopener">al-folio</a>. Hosted by GitHub Pages. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "publications",
+          description: "Selected publications in trustworthy AI, adversarial machine learning, and machine learning security.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-teaching",
+          title: "teaching",
+          description: "Teaching by Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/teaching/";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae of Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-contact",
+          title: "contact",
+          description: "Contact Dr. Bao Gia Doan at UNSW Sydney.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/contacts/";
+          },
+        },{id: "post-bias-and-variance-understanding-underfitting-and-overfitting",
+        
+          title: "Bias and Variance: Understanding Underfitting and Overfitting",
+        
+        description: "How bias, variance, and Bayes error explain a model&#39;s generalization error—and what training and validation results can tell us.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bias-and-variance/";
+          
+        },
+      },{id: "post-the-ml-basics-and-concepts-series",
+        
+          title: "The ML Basics and Concepts Series",
+        
+        description: "A guided series on the core ideas that shape how machine learning models learn, generalize, and fail.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ml-basics-and-concepts-series/";
+          
+        },
+      },{id: "news-presented-bayesian-learned-models-can-detect-adversarial-malware-for-free-https-link-springer-com-chapter-10-1007-978-3-031-70879-4-3-at-esorics-2024-in-bydgoszcz-poland",
+          title: 'Presented [“Bayesian Learned Models Can Detect Adversarial Malware for Free”](https://link.springer.com/chapter/10.1007/978-3-031-70879-4_3) at ESORICS 2024...',
+          description: "",
+          section: "News",},{id: "news-presented-on-the-credibility-of-backdoor-attacks-against-object-detectors-in-the-physical-world-https-arxiv-org-abs-2408-12122-at-acsac-2024-in-hawaii",
+          title: 'Presented [“On the Credibility of Backdoor Attacks Against Object Detectors in the Physical...',
+          description: "",
+          section: "News",},{id: "news-our-paper-bayesian-low-rank-learning-bella-a-practical-approach-to-bayesian-neural-networks-https-arxiv-org-abs-2407-20891-was-accepted-to-aaai-2025",
+          title: 'Our paper, [“Bayesian Low-Rank LeArning (Bella): A Practical Approach to Bayesian Neural Networks”](https://arxiv.org/abs/2407.20891),...',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-icml-2025-https-icml-cc-conferences-2025",
+          title: 'Serving on the Program Committee for [ICML 2025](https://icml.cc/Conferences/2025).',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-neurips-https-neurips-cc",
+          title: 'Serving on the Program Committee for [NeurIPS](https://neurips.cc/).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-the-aaai-2026-special-track-on-ai-alignment-https-aaai-org-conference-aaai-aaai-26-aia-call",
+          title: 'Serving as a Program Committee member for the [AAAI 2026 Special Track on...',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-iclr-2026-https-iclr-cc-conferences-2026",
+          title: 'Serving as a Program Committee member for [ICLR 2026](https://iclr.cc/Conferences/2026).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-aaai-27-https-aaai-org-conference-aaai-aaai-27",
+          title: 'Serving as a Program Committee member for [AAAI-27](https://aaai.org/conference/aaai/aaai-27/).',
+          description: "",
+          section: "News",},{id: "news-attended-adstar-2026-https-www-dst-defence-gov-au-event-adstar-2026-australian-defence-science-technology-and-research-summit-in-adelaide-australia-from-4-6-august-2026",
+          title: 'Attended [ADSTAR 2026](https://www.dst.defence.gov.au/event/adstar-2026-australian-defence-science-technology-and-research-summit) in Adelaide, Australia, from 4–6 August 2026.',
+          description: "",
+          section: "News",},{id: "news-our-paper-didact-a-cross-domain-capability-discovery-system-for-defence-https-arxiv-org-abs-2606-06942-was-accepted-to-cikm-2026-https-cikm2026-diag-uniroma1-it",
+          title: 'Our paper, [“Didact: A Cross-Domain Capability Discovery System for Defence”](https://arxiv.org/abs/2606.06942), was accepted to...',
+          description: "",
+          section: "News",},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/Bao_Gia_Doan_CV.pdf", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=IKf830cAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/baogiadoan", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> <script defer src="/assets/al_email_protect/js/email-protect.js"></script> </body> </html>

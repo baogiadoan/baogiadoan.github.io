@@ -403,6 +403,7 @@ input,
 button,
 textarea,
 p,
+blockquote,
 th,
 td,
 span,
@@ -501,6 +502,13 @@ pre {
   border-radius: 2px;
 }
 
+hr {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  border: 0;
+  border-top: 1px solid #126dce;
+}
+
 #complete > select > option:hover {
   background: #d4d4d4;
   background-color: #d4d4d4;
@@ -516,6 +524,22 @@ pre {
   -webkit-box-shadow: none;
   box-shadow: none;
   z-index: 10;
+}
+
+#toc a,
+.toc {
+  color: #303030 !important;
+  font-size: 11pt !important;
+}
+
+#toc li > span:hover {
+  background-color: #d4d4d4 !important;
+}
+
+#toc a:hover,
+.toc {
+  color: #1c1c1c !important;
+  font-size: 11pt !important;
 }
 
 
