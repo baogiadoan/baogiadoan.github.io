@@ -330,7 +330,7 @@ jekyll-archives:
       categories: "/blog/:type/:name/"
 
 display_tags: []
-display_categories: []
+display_categories: ["ML Basics and Concepts"]
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
