@@ -24,11 +24,15 @@ The guiding question is:
    Why high bias leads to underfitting, why high variance leads to overfitting,
    and where Bayes error sets the irreducible limit.
 
+2. [Train, Validation, and Test Sets]({% post_url 2026-08-16-train-validation-and-test-sets %})
+
+   How to measure generalization without leaking information, overfitting the
+   evaluation, or testing on data that does not represent deployment.
+
 ## Topics to expand later
 
 Future notes will build on this foundation with topics such as:
 
-- the train, validation, and test split;
 - regularization and model capacity;
 - loss functions and evaluation metrics;
 - maximum likelihood and maximum a posteriori estimation;
