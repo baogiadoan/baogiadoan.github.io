@@ -1,0 +1,210 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Train, Validation, and Test Sets: Measuring Generalization Correctly | Dr. Bao Gia Doan </title> <meta name="author" content="Bao Gia Doan"> <meta name="description" content="How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples."> <meta name="keywords" content="trustworthy AI, adversarial machine learning, machine learning security, retrieval-augmented generation, RAG, large language models"> <meta property="og:site_name" content="Dr. Bao Gia Doan"> <meta property="og:type" content="article"> <meta property="og:title" content="Dr. Bao Gia Doan | Train, Validation, and Test Sets: Measuring Generalization Correctly"> <meta property="og:url" content="https://www.baodoan.net/blog/2026/train-validation-and-test-sets/"> <meta property="og:description" content="How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples."> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Train, Validation, and Test Sets: Measuring Generalization Correctly"> <meta name="twitter:description" content="How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples."> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Bao Gia Doan"
+        },
+        "url": "https://www.baodoan.net/blog/2026/train-validation-and-test-sets/",
+        "@type": "BlogPosting",
+        "description": "How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples.",
+        "headline": "Train, Validation, and Test Sets: Measuring Generalization Correctly",
+        
+        "sameAs": [null,"https://github.com/baogiadoan","https://www.linkedin.com/in/baogiadoan","https://scholar.google.com/citations?user=IKf830cAAAAJ","https://twitter.com/baogiadoan"],
+        
+        "name": "Bao Gia Doan",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A4%96&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://www.baodoan.net/blog/2026/train-validation-and-test-sets/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link rel="stylesheet" href="/assets/al_email_protect/css/email-protect.css"> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Dr. Bao Gia Doan </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/teaching/">teaching </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/contacts/">contact </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Train, Validation, and Test Sets: Measuring Generalization Correctly</h1> <p class="post-meta"> Created on August 15, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/machine-learning"> <i class="fa-solid fa-hashtag fa-sm"></i> machine-learning</a>   <a href="/blog/tag/fundamentals"> <i class="fa-solid fa-hashtag fa-sm"></i> fundamentals</a>   <a href="/blog/tag/generalization"> <i class="fa-solid fa-hashtag fa-sm"></i> generalization</a>   <a href="/blog/tag/evaluation"> <i class="fa-solid fa-hashtag fa-sm"></i> evaluation</a>   <a href="/blog/tag/tutorial"> <i class="fa-solid fa-hashtag fa-sm"></i> tutorial</a>   ·   <a href="/blog/category/ml-basics-and-concepts"> <i class="fa-solid fa-tag fa-sm"></i> ML Basics and Concepts</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-three-roles">The three roles</a></li> <li class="toc-entry toc-h2"><a href="#why-training-performance-is-not-enough">Why training performance is not enough</a></li> <li class="toc-entry toc-h2"><a href="#the-validation-set-is-part-of-training">The validation set is part of training</a></li> <li class="toc-entry toc-h2"><a href="#why-the-test-set-should-be-used-once">Why the test set should be used once</a></li> <li class="toc-entry toc-h2"><a href="#choosing-the-split-proportions">Choosing the split proportions</a></li> <li class="toc-entry toc-h2"><a href="#choose-the-split-unit-before-the-split-method">Choose the split unit before the split method</a></li> <li class="toc-entry toc-h2"> <a href="#common-splitting-strategies">Common splitting strategies</a> <ul> <li class="toc-entry toc-h3"><a href="#random-split">Random split</a></li> <li class="toc-entry toc-h3"><a href="#stratified-split">Stratified split</a></li> <li class="toc-entry toc-h3"><a href="#grouped-split">Grouped split</a></li> <li class="toc-entry toc-h3"><a href="#time-based-split">Time-based split</a></li> <li class="toc-entry toc-h3"><a href="#spatial-or-domain-based-split">Spatial or domain-based split</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#data-leakage">Data leakage</a> <ul> <li class="toc-entry toc-h3"><a href="#target-leakage">Target leakage</a></li> <li class="toc-entry toc-h3"><a href="#preprocessing-leakage">Preprocessing leakage</a></li> <li class="toc-entry toc-h3"><a href="#duplicate-and-augmentation-leakage">Duplicate and augmentation leakage</a></li> <li class="toc-entry toc-h3"><a href="#selection-leakage">Selection leakage</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#cross-validation">Cross-validation</a></li> <li class="toc-entry toc-h2"><a href="#distribution-mismatch">Distribution mismatch</a></li> <li class="toc-entry toc-h2"><a href="#connecting-splits-to-bias-and-variance">Connecting splits to bias and variance</a></li> <li class="toc-entry toc-h2"><a href="#a-practical-workflow">A practical workflow</a></li> <li class="toc-entry toc-h2"><a href="#takeaways">Takeaways</a></li> </ul> </div> <hr> <div id="markdown-content"> <p><em>This is the second post in the <a href="/blog/2026/ml-basics-and-concepts-series/">ML Basics and Concepts series</a>. It builds on <a href="/blog/2026/bias-and-variance/">Bias and Variance</a>.</em></p> <p>A model can achieve excellent performance on examples it has already seen and still fail on new ones. The central purpose of dataset splitting is to separate <strong>learning</strong> from <strong>evaluation</strong> so that we can answer the question that actually matters:</p> <blockquote> <p>How well will this model perform on future data drawn from the target population?</p> </blockquote> <p>The familiar train, validation, and test split is not merely an organizational convention. Each subset has a different statistical role. When those roles are mixed, information leaks into the learning process and the reported result becomes optimistic.</p> <h2 id="the-three-roles">The three roles</h2> <p>Suppose we begin with a dataset $D$ sampled from some population. We partition it into three disjoint subsets:</p> \[D = D_{\text{train}} \cup D_{\text{val}} \cup D_{\text{test}}.\] <table> <thead> <tr> <th>Subset</th> <th>Primary role</th> <th>What may depend on it?</th> </tr> </thead> <tbody> <tr> <td><strong>Training set</strong></td> <td>Fit model parameters</td> <td>Weights, coefficients, learned representations, and fitted preprocessing</td> </tr> <tr> <td><strong>Validation set</strong></td> <td>Make development decisions</td> <td>Architecture, hyperparameters, thresholds, feature choices, and stopping time</td> </tr> <tr> <td><strong>Test set</strong></td> <td>Estimate final generalization</td> <td>Ideally nothing; it is used only after the model and evaluation procedure are fixed</td> </tr> </tbody> </table> <p>The key distinction is between <strong>model parameters</strong> and <strong>development choices</strong>. Gradient descent may fit millions of weights using the training set, while the validation set determines choices such as depth, learning rate, regularization strength, data augmentation, or the epoch at which training stops. Both are forms of learning from data.</p> <p>The test set is different. It simulates data that remained unavailable throughout development.</p> <h2 id="why-training-performance-is-not-enough">Why training performance is not enough</h2> <p>A sufficiently flexible model can memorize its training examples. Its empirical training error,</p> \[\widehat R_{\text{train}}(h) = \frac{1}{|D_{\text{train}}|} \sum_{(x_i,y_i)\in D_{\text{train}}} \ell\!\left(h(x_i),y_i\right),\] <p>measures fit to the sample used for learning. It does not provide an independent estimate of the population risk</p> \[R(h)=\mathbb{E}_{(X,Y)\sim P}\left[\ell(h(X),Y)\right].\] <p>The gap between these quantities is the generalization gap. A validation or test set approximates population risk only when it has not already influenced the predictor in the way it is being evaluated.</p> <h2 id="the-validation-set-is-part-of-training">The validation set is part of training</h2> <p>Although no gradient may be computed directly from the validation set, repeated validation feedback guides development. Consider a workflow that tries 100 model configurations and keeps the one with the highest validation accuracy. The selected model benefits from information in that validation set: configurations that happened to match its noise were more likely to win.</p> <p>This is <strong>overfitting to the validation set</strong>. It becomes more severe when:</p> <ul> <li>many configurations are compared;</li> <li>the validation set is small or noisy;</li> <li>decisions are repeatedly made after inspecting individual errors;</li> <li>researchers manually adapt features or rules to validation examples;</li> <li>only the best result across many random seeds is reported.</li> </ul> <p>Validation data are therefore development data. They should not be treated as an untouched estimate of final performance.</p> <h2 id="why-the-test-set-should-be-used-once">Why the test set should be used once</h2> <p>The test set is intended to answer one final question after the model, preprocessing, decision threshold, and metric have been fixed. If its results influence another round of development, it has begun to act as a validation set.</p> <p>This does not mean a test set can literally be evaluated only once. The principle is that it should not provide an adaptive feedback loop. If we inspect the test result, change the system, and inspect it again many times, the final system can overfit the test set even without directly training on its examples.</p> <p>The same problem occurs at the community level. A public benchmark can become a shared validation set after years of model selection, paper writing, and leaderboard tuning. Honest progress then requires fresh test data or a hidden evaluation server.</p> <h2 id="choosing-the-split-proportions">Choosing the split proportions</h2> <p>Rules such as 70/15/15 or 80/10/10 are starting points, not laws. The right split is determined by the number of examples required for two competing goals:</p> <ol> <li>enough training data to learn a useful model;</li> <li>enough validation and test data to compare and estimate performance precisely.</li> </ol> <p>With millions of independent examples, even 1% may produce a large evaluation set. With a small dataset, fixed holdout sets may be too noisy, making cross-validation more useful.</p> <p>For a fixed classifier evaluated with <strong>0–1 loss</strong>, the empirical test error $\hat p$ is the proportion of misclassified examples:</p> \[\hat p = \frac{1}{N}\sum_{i=1}^{N} \mathbf{1}\!\left[h(x_i)\neq y_i\right].\] <p>Each test outcome is therefore treated as a Bernoulli variable: 1 when the prediction is wrong and 0 when it is correct. On $N$ approximately independent test examples, the estimated standard error of this proportion is</p> \[\operatorname{SE}(\hat p) \approx \sqrt{\frac{\hat p(1-\hat p)}{N}}.\] <p>This standard error measures <strong>finite-test-set sampling uncertainty</strong>. It describes how much the measured error would typically vary if we evaluated the same fixed classifier on another independent test set of size $N$ from the same distribution. A rough 95% confidence interval is $\hat p\pm1.96\operatorname{SE}(\hat p)$.</p> <p>It does not measure variation caused by retraining on different training sets, uncertainty in an individual prediction, or distribution shift. When examples are grouped or correlated, the effective sample size can be far smaller than $N$, so a group-aware confidence interval or bootstrap procedure is more appropriate.</p> <h2 id="choose-the-split-unit-before-the-split-method">Choose the split unit before the split method</h2> <p>The most important decision is often not the percentage but the <strong>unit that must be independent</strong>. Splitting individual rows is wrong when several rows come from the same underlying entity.</p> <p>Examples include:</p> <ul> <li>multiple images of the same patient;</li> <li>several frames from the same video;</li> <li>repeated transactions from one customer;</li> <li>patches cropped from the same source image;</li> <li>augmented versions of one original example;</li> <li>messages from the same conversation;</li> <li>measurements from the same machine or location.</li> </ul> <p>If related examples appear in both training and test sets, the model can exploit entity-specific information. The measured performance may then describe recognition of known entities rather than generalization to new ones.</p> <p>The safe rule is: <strong>split groups first, then construct examples or augmentations within each split</strong>.</p> <h2 id="common-splitting-strategies">Common splitting strategies</h2> <h3 id="random-split">Random split</h3> <p>A random split is appropriate when examples are approximately independent and identically distributed, and future data will come from the same stable population. It is simple and often effective, but it does not protect against hidden groups, duplicates, or temporal dependence.</p> <h3 id="stratified-split">Stratified split</h3> <p>A stratified split approximately preserves selected proportions—most commonly class frequencies—across subsets. It is useful when a random split might place too few minority-class examples in validation or test data.</p> <p>Stratification should not be confused with balancing. Preserving a naturally rare class keeps the evaluation representative; oversampling that class changes the evaluation distribution unless metrics are reweighted appropriately.</p> <h3 id="grouped-split">Grouped split</h3> <p>A grouped split keeps all examples from an entity in one subset. For medical imaging, the split is usually by patient rather than image. For document chunks, it may be by source document. For federated learning, it may be by client.</p> <p>This strategy evaluates the harder and often more relevant question: can the model generalize to unseen groups?</p> <h3 id="time-based-split">Time-based split</h3> <p>When a model predicts the future from the past, the split should respect time:</p> \[t_{\text{train}} &lt; t_{\text{val}} &lt; t_{\text{test}}.\] <p>Randomly moving future observations into the training set leaks information that would not have existed at deployment time. Time-based evaluation also exposes temporal drift in user behavior, prevalence, policy, sensors, or market conditions.</p> <h3 id="spatial-or-domain-based-split">Spatial or domain-based split</h3> <p>If deployment involves new hospitals, countries, cameras, environments, or data providers, holding out entire domains can be more informative than randomly holding out examples within every domain. The correct split should resemble the intended generalization boundary.</p> <h2 id="data-leakage">Data leakage</h2> <p><strong>Data leakage</strong> occurs when information unavailable at prediction time influences training or model selection. Leakage can make a weak model appear remarkably strong.</p> <h3 id="target-leakage">Target leakage</h3> <p>A feature directly or indirectly contains information about the target that would not be available when the prediction is made. For example, using a treatment prescribed after diagnosis to predict that diagnosis leaks the outcome timeline.</p> <h3 id="preprocessing-leakage">Preprocessing leakage</h3> <p>Any preprocessing step that learns from data must be fitted using the training set only. This includes:</p> <ul> <li>normalization means and variances;</li> <li>missing-value imputation;</li> <li>vocabulary construction;</li> <li>feature selection;</li> <li>dimensionality reduction;</li> <li>learned tokenization or representations;</li> <li>class-balancing procedures such as synthetic oversampling.</li> </ul> <p>The correct order is:</p> <ol> <li>split the raw examples;</li> <li>fit preprocessing on the training split;</li> <li>apply the fitted transformation to validation and test splits.</li> </ol> <p>A pipeline abstraction is valuable because it binds preprocessing and model fitting into one procedure and reduces accidental leakage during cross-validation.</p> <h3 id="duplicate-and-augmentation-leakage">Duplicate and augmentation leakage</h3> <p>Exact duplicates, near-duplicates, or augmented versions of the same example must not cross split boundaries. Deduplication should consider semantics, not only identical file hashes: resized images, copied text with minor edits, and overlapping time windows can still reveal almost the same example.</p> <h3 id="selection-leakage">Selection leakage</h3> <p>Selecting features, thresholds, prompts, or checkpoints after observing test results leaks test information into the final system. Even an apparently harmless manual inspection can become selection leakage when it changes what is submitted or reported.</p> <h2 id="cross-validation">Cross-validation</h2> <p>When data are limited, one validation split may give an unstable comparison. In $K$-fold cross-validation, the development data are divided into $K$ folds. Each fold serves as validation data once while the remaining $K-1$ folds are used for training:</p> \[\widehat R_{\text{CV}} = \frac{1}{K}\sum_{k=1}^{K}\widehat R^{(k)}_{\text{val}}.\] <p>The average gives a more stable estimate for model selection, and variation across folds reveals sensitivity to the sampled data. The fold construction must still obey the correct unit: use stratified folds for class proportions, group folds for entities, and forward-chaining splits for time series.</p> <p>Cross-validation does not eliminate the need for an independent test set when a final unbiased estimate is required. The usual workflow is:</p> <ol> <li>reserve the test set;</li> <li>use cross-validation within the remaining development data;</li> <li>select the model and hyperparameters;</li> <li>optionally refit the fixed procedure on all development data;</li> <li>evaluate once on the reserved test set.</li> </ol> <p>When both model selection and performance estimation must use resampling, <strong>nested cross-validation</strong> places model selection in an inner loop and evaluation in an outer loop. It is more expensive but avoids evaluating a hyperparameter search on the same folds that selected it.</p> <h2 id="distribution-mismatch">Distribution mismatch</h2> <p>Independence is not enough. Validation and test data must also represent the distribution we care about.</p> <p>Suppose a model is trained on studio photographs but deployed on mobile-phone images. A random split of the studio dataset can produce an accurate estimate of performance on more studio photographs while saying little about deployment. The estimate is statistically valid for the wrong population.</p> <p>Useful questions include:</p> <ul> <li>Do class frequencies match deployment?</li> <li>Are devices, locations, demographics, and time periods represented?</li> <li>Does data collection reproduce the information available at prediction time?</li> <li>Are rare but important operating conditions present?</li> <li>Is the label definition consistent across splits and deployment?</li> </ul> <p>Sometimes training data are intentionally broader or rebalanced. That can be useful, but validation and test sets should still reflect the target population or be reweighted to a clearly defined target distribution.</p> <p>If multiple deployment domains matter, report results separately rather than hiding failures inside a single average.</p> <h2 id="connecting-splits-to-bias-and-variance">Connecting splits to bias and variance</h2> <p>The <a href="/blog/2026/bias-and-variance/">previous article</a> used training and validation errors as practical diagnostics. With a trustworthy split, their pattern provides an initial signal:</p> <table> <thead> <tr> <th>Training result</th> <th>Validation result</th> <th>Likely interpretation</th> </tr> </thead> <tbody> <tr> <td>Poor</td> <td>Poor and similar</td> <td>High bias, weak features, optimization failure, or noisy labels</td> </tr> <tr> <td>Strong</td> <td>Much poorer</td> <td>High variance, leakage in training evaluation, or distribution mismatch</td> </tr> <tr> <td>Strong</td> <td>Strong</td> <td>Good fit on the validation distribution; final test evaluation is still needed</td> </tr> <tr> <td>Poor</td> <td>Surprisingly strong</td> <td>Small-sample noise, inconsistent pipelines, or an implementation error</td> </tr> </tbody> </table> <p>Learning curves make the diagnosis more informative. Plot training and validation performance as the training-set size increases. A persistent high error in both curves suggests bias. A large gap that narrows with more data suggests variance.</p> <p>These patterns are clues rather than proofs. Before changing model capacity, verify the split, metric, labels, and preprocessing pipeline.</p> <h2 id="a-practical-workflow">A practical workflow</h2> <ol> <li> <strong>Define deployment first.</strong> Specify the population, prediction time, available inputs, target, and metric.</li> <li> <strong>Identify dependence.</strong> Decide whether the split unit is an example, person, document, device, location, or time period.</li> <li> <strong>Reserve the test set.</strong> Keep it inaccessible during routine development.</li> <li> <strong>Split before preprocessing or augmentation.</strong> Fit every learned transformation using training data only.</li> <li> <strong>Develop with validation data.</strong> Use a holdout set or an appropriate form of cross-validation.</li> <li> <strong>Track all adaptive decisions.</strong> Architecture searches, prompt changes, threshold selection, and manual error analysis all consume validation information.</li> <li> <strong>Freeze the procedure.</strong> Fix preprocessing, hyperparameters, checkpoint selection, threshold, and metric.</li> <li> <strong>Evaluate the test set once for the final claim.</strong> Report uncertainty and relevant subgroup or domain results.</li> <li> <strong>Create fresh test data after further iteration.</strong> Once test feedback changes the system, that test set is no longer fully untouched.</li> </ol> <h2 id="takeaways">Takeaways</h2> <ul> <li>Training data fit parameters; validation data guide development; test data estimate final generalization.</li> <li>Repeatedly adapting to validation or test results causes evaluation overfitting.</li> <li>Split by the unit that must generalize: patient, document, device, location, or time, not automatically by row.</li> <li>Perform learned preprocessing and augmentation only after the split boundaries are established.</li> <li>Cross-validation reduces dependence on one validation split but does not excuse leakage or an inappropriate split strategy.</li> <li>An independent test set is useful only when it represents the deployment population.</li> <li>Report uncertainty: test performance is an estimate based on a finite sample, not a permanent property of the model.</li> </ul> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/bias-and-variance/">Bias and Variance: Understanding Underfitting and Overfitting</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/ml-basics-and-concepts-series/">The ML Basics and Concepts Series</a> </li> </ul> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Bao Gia Doan. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="external nofollow noopener">al-folio</a>. Hosted by GitHub Pages. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "publications",
+          description: "Selected publications in trustworthy AI, adversarial machine learning, and machine learning security.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-teaching",
+          title: "teaching",
+          description: "Teaching by Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/teaching/";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae of Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-contact",
+          title: "contact",
+          description: "Contact Dr. Bao Gia Doan at UNSW Sydney.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/contacts/";
+          },
+        },{id: "post-train-validation-and-test-sets-measuring-generalization-correctly",
+        
+          title: "Train, Validation, and Test Sets: Measuring Generalization Correctly",
+        
+        description: "How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/train-validation-and-test-sets/";
+          
+        },
+      },{id: "post-bias-and-variance-understanding-underfitting-and-overfitting",
+        
+          title: "Bias and Variance: Understanding Underfitting and Overfitting",
+        
+        description: "How bias, variance, and Bayes error explain a model&#39;s generalization error—and what training and validation results can tell us.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bias-and-variance/";
+          
+        },
+      },{id: "post-the-ml-basics-and-concepts-series",
+        
+          title: "The ML Basics and Concepts Series",
+        
+        description: "A guided series on the core ideas that shape how machine learning models learn, generalize, and fail.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ml-basics-and-concepts-series/";
+          
+        },
+      },{id: "news-presented-bayesian-learned-models-can-detect-adversarial-malware-for-free-https-link-springer-com-chapter-10-1007-978-3-031-70879-4-3-at-esorics-2024-in-bydgoszcz-poland",
+          title: 'Presented [“Bayesian Learned Models Can Detect Adversarial Malware for Free”](https://link.springer.com/chapter/10.1007/978-3-031-70879-4_3) at ESORICS 2024...',
+          description: "",
+          section: "News",},{id: "news-presented-on-the-credibility-of-backdoor-attacks-against-object-detectors-in-the-physical-world-https-arxiv-org-abs-2408-12122-at-acsac-2024-in-hawaii",
+          title: 'Presented [“On the Credibility of Backdoor Attacks Against Object Detectors in the Physical...',
+          description: "",
+          section: "News",},{id: "news-our-paper-bayesian-low-rank-learning-bella-a-practical-approach-to-bayesian-neural-networks-https-arxiv-org-abs-2407-20891-was-accepted-to-aaai-2025",
+          title: 'Our paper, [“Bayesian Low-Rank LeArning (Bella): A Practical Approach to Bayesian Neural Networks”](https://arxiv.org/abs/2407.20891),...',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-icml-2025-https-icml-cc-conferences-2025",
+          title: 'Serving on the Program Committee for [ICML 2025](https://icml.cc/Conferences/2025).',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-neurips-https-neurips-cc",
+          title: 'Serving on the Program Committee for [NeurIPS](https://neurips.cc/).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-the-aaai-2026-special-track-on-ai-alignment-https-aaai-org-conference-aaai-aaai-26-aia-call",
+          title: 'Serving as a Program Committee member for the [AAAI 2026 Special Track on...',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-iclr-2026-https-iclr-cc-conferences-2026",
+          title: 'Serving as a Program Committee member for [ICLR 2026](https://iclr.cc/Conferences/2026).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-aaai-27-https-aaai-org-conference-aaai-aaai-27",
+          title: 'Serving as a Program Committee member for [AAAI-27](https://aaai.org/conference/aaai/aaai-27/).',
+          description: "",
+          section: "News",},{id: "news-attended-adstar-2026-https-www-dst-defence-gov-au-event-adstar-2026-australian-defence-science-technology-and-research-summit-in-adelaide-australia-from-4-6-august-2026",
+          title: 'Attended [ADSTAR 2026](https://www.dst.defence.gov.au/event/adstar-2026-australian-defence-science-technology-and-research-summit) in Adelaide, Australia, from 4–6 August 2026.',
+          description: "",
+          section: "News",},{id: "news-our-paper-didact-a-cross-domain-capability-discovery-system-for-defence-https-arxiv-org-abs-2606-06942-was-accepted-to-cikm-2026-https-cikm2026-diag-uniroma1-it",
+          title: 'Our paper, [“Didact: A Cross-Domain Capability Discovery System for Defence”](https://arxiv.org/abs/2606.06942), was accepted to...',
+          description: "",
+          section: "News",},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/Bao_Gia_Doan_CV.pdf", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=IKf830cAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/baogiadoan", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> <script defer src="/assets/al_email_protect/js/email-protect.js"></script> </body> </html>
