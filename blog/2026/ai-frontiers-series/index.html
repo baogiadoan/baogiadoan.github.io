@@ -1,0 +1,224 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> The AI Frontiers Series: From Models That Answer to Systems That Act | Dr. Bao Gia Doan </title> <meta name="author" content="Bao Gia Doan"> <meta name="description" content="A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety."> <meta name="keywords" content="trustworthy AI, adversarial machine learning, machine learning security, retrieval-augmented generation, RAG, large language models"> <meta property="og:site_name" content="Dr. Bao Gia Doan"> <meta property="og:type" content="article"> <meta property="og:title" content="Dr. Bao Gia Doan | The AI Frontiers Series: From Models That Answer to Systems That Act"> <meta property="og:url" content="https://www.baodoan.net/blog/2026/ai-frontiers-series/"> <meta property="og:description" content="A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety."> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="The AI Frontiers Series: From Models That Answer to Systems That Act"> <meta name="twitter:description" content="A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety."> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Bao Gia Doan"
+        },
+        "url": "https://www.baodoan.net/blog/2026/ai-frontiers-series/",
+        "@type": "BlogPosting",
+        "description": "A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety.",
+        "headline": "The AI Frontiers Series: From Models That Answer to Systems That Act",
+        
+        "sameAs": [null,"https://github.com/baogiadoan","https://www.linkedin.com/in/baogiadoan","https://scholar.google.com/citations?user=IKf830cAAAAJ","https://twitter.com/baogiadoan"],
+        
+        "name": "Bao Gia Doan",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A4%96&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://www.baodoan.net/blog/2026/ai-frontiers-series/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link rel="stylesheet" href="/assets/al_email_protect/css/email-protect.css"> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Dr. Bao Gia Doan </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/teaching/">teaching </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/contacts/">contact </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">The AI Frontiers Series: From Models That Answer to Systems That Act</h1> <p class="post-meta"> Created on August 19, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/artificial-intelligence"> <i class="fa-solid fa-hashtag fa-sm"></i> artificial-intelligence</a>   <a href="/blog/tag/agentic-ai"> <i class="fa-solid fa-hashtag fa-sm"></i> agentic-ai</a>   <a href="/blog/tag/llm"> <i class="fa-solid fa-hashtag fa-sm"></i> llm</a>   <a href="/blog/tag/emerging-technology"> <i class="fa-solid fa-hashtag fa-sm"></i> emerging-technology</a>   ·   <a href="/blog/category/ai-frontiers"> <i class="fa-solid fa-tag fa-sm"></i> AI Frontiers</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-questions-guiding-this-series">The questions guiding this series</a></li> <li class="toc-entry toc-h2"> <a href="#planned-topics">Planned topics</a> <ul> <li class="toc-entry toc-h3"><a href="#1-what-makes-an-ai-system-agentic">1. What makes an AI system agentic?</a></li> <li class="toc-entry toc-h3"><a href="#2-reasoning-and-inference-time-computation">2. Reasoning and inference-time computation</a></li> <li class="toc-entry toc-h3"><a href="#3-tool-use-and-interoperability">3. Tool use and interoperability</a></li> <li class="toc-entry toc-h3"><a href="#4-context-engineering-retrieval-and-memory">4. Context engineering, retrieval, and memory</a></li> <li class="toc-entry toc-h3"><a href="#5-planning-and-long-horizon-execution">5. Planning and long-horizon execution</a></li> <li class="toc-entry toc-h3"><a href="#6-deep-research-and-agentic-retrieval-systems">6. Deep-research and agentic retrieval systems</a></li> <li class="toc-entry toc-h3"><a href="#7-coding-agents-and-computer-use">7. Coding agents and computer use</a></li> <li class="toc-entry toc-h3"><a href="#8-multi-agent-systems">8. Multi-agent systems</a></li> <li class="toc-entry toc-h3"><a href="#9-multimodal-embodied-and-world-model-based-ai">9. Multimodal, embodied, and world-model-based AI</a></li> <li class="toc-entry toc-h3"><a href="#10-learning-from-feedback-and-synthetic-experience">10. Learning from feedback and synthetic experience</a></li> <li class="toc-entry toc-h3"><a href="#11-smaller-faster-and-more-local-models">11. Smaller, faster, and more local models</a></li> <li class="toc-entry toc-h3"><a href="#12-evaluation-observability-and-trustworthy-deployment">12. Evaluation, observability, and trustworthy deployment</a></li> <li class="toc-entry toc-h3"><a href="#13-safety-and-security-for-systems-that-act">13. Safety and security for systems that act</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#how-the-posts-will-be-structured">How the posts will be structured</a></li> </ul> </div> <hr> <div id="markdown-content"> <p>AI is moving from models that produce an answer in a single pass to systems that can reason, use tools, remember context, and act across many steps. <strong>Agentic AI</strong> is one part of that shift, but it connects to a much larger set of ideas: multimodal models, retrieval, reinforcement learning, world models, efficient inference, evaluation, and safety.</p> <p>This series will explore those ideas as a set of engineering concepts rather than a stream of product announcements. The goal is to understand how the systems work, what they make possible, where they fail, and how to evaluate them in practice.</p> <p>It complements the <a href="/blog/2026/ml-basics-and-concepts-series/">ML Basics and Concepts series</a>, which develops the foundations needed to reason about learning and generalization. Here, the focus shifts from training an individual model to building reliable systems around modern foundation models.</p> <h2 id="the-questions-guiding-this-series">The questions guiding this series</h2> <p>Each post will return to four questions:</p> <ol> <li>What new capability does the technology add?</li> <li>What components and feedback loops make it work?</li> <li>How do we know whether it works reliably outside a demo?</li> <li>What new costs, risks, or failure modes does it introduce?</li> </ol> <h2 id="planned-topics">Planned topics</h2> <p>The roadmap is provisional: the field changes quickly, and the order may evolve as new techniques mature.</p> <h3 id="1-what-makes-an-ai-system-agentic">1. What makes an AI system agentic?</h3> <p>We will begin by separating <strong>models</strong>, <strong>workflows</strong>, and <strong>agents</strong>. The post will introduce the basic agent loop—observe, reason, act, and inspect the result—and show why autonomy is a spectrum rather than a binary label.</p> <h3 id="2-reasoning-and-inference-time-computation">2. Reasoning and inference-time computation</h3> <p>Why can spending more computation at inference time improve an answer? We will look at decomposition, search, sampling, reflection, and verification, as well as the difference between producing a plausible chain of thought and reaching a result that can actually be checked.</p> <h3 id="3-tool-use-and-interoperability">3. Tool use and interoperability</h3> <p>Language models become more useful when they can query databases, run code, search the web, or call external services. This post will cover function calling, tool selection, structured inputs and outputs, protocols such as MCP, permissions, and the boundary between a model’s decision and a program’s execution.</p> <h3 id="4-context-engineering-retrieval-and-memory">4. Context engineering, retrieval, and memory</h3> <p>A long context window is not the same as memory. We will compare prompting, retrieval-augmented generation, context compression, working memory, and persistent memory, then examine how an agent decides what to store, retrieve, forget, or trust.</p> <h3 id="5-planning-and-long-horizon-execution">5. Planning and long-horizon execution</h3> <p>Multi-step tasks require more than a good initial plan. We will study task decomposition, state tracking, re-planning, checkpointing, error recovery, and the trade-off between rigid workflows and open-ended autonomy.</p> <h3 id="6-deep-research-and-agentic-retrieval-systems">6. Deep-research and agentic retrieval systems</h3> <p>Research agents combine search, browsing, source selection, synthesis, and citation. We will trace that pipeline and examine common failures such as weak evidence, confirmation bias, duplicated sources, and confident conclusions drawn from missing information.</p> <h3 id="7-coding-agents-and-computer-use">7. Coding agents and computer use</h3> <p>Some agents act through APIs; others operate software through a terminal, an IDE, or a graphical interface. We will explore how coding and computer-use agents navigate environments, execute changes, test their work, recover from mistakes, and keep a human in control of consequential actions.</p> <h3 id="8-multi-agent-systems">8. Multi-agent systems</h3> <p>When does dividing work among several agents help? This post will cover role-based collaboration, routing, parallel exploration, debate, shared memory, coordination costs, and the cases where a simpler single-agent design is more reliable.</p> <h3 id="9-multimodal-embodied-and-world-model-based-ai">9. Multimodal, embodied, and world-model-based AI</h3> <p>Modern systems increasingly connect language with images, audio, video, spatial reasoning, and action. We will look at multimodal agents, vision-language-action models, robotics, and world models that learn or generate environments for planning and interaction.</p> <h3 id="10-learning-from-feedback-and-synthetic-experience">10. Learning from feedback and synthetic experience</h3> <p>The next generation of systems is shaped not only by human-written data but also by verifiable rewards, simulations, self-play, model-generated data, and interaction traces. We will discuss what these feedback signals can teach—and how errors can be amplified when models learn from their own outputs.</p> <h3 id="11-smaller-faster-and-more-local-models">11. Smaller, faster, and more local models</h3> <p>Frontier capability is only part of the story. Distillation, quantization, mixture-of-experts architectures, speculative decoding, and on-device models change the cost, latency, privacy, and accessibility of AI systems. We will examine how to choose the smallest model that can reliably do the job.</p> <h3 id="12-evaluation-observability-and-trustworthy-deployment">12. Evaluation, observability, and trustworthy deployment</h3> <p>An agent can fail even when its underlying model scores well on a benchmark. We will cover task-level success, trace inspection, reproducibility, latency and cost, human evaluation, adversarial testing, and monitoring after deployment.</p> <h3 id="13-safety-and-security-for-systems-that-act">13. Safety and security for systems that act</h3> <p>Tool access turns model mistakes into real actions. This post will examine prompt injection, data leakage, excessive permissions, unsafe side effects, approval gates, sandboxing, audit trails, and graceful ways for a system to stop or ask for help.</p> <h2 id="how-the-posts-will-be-structured">How the posts will be structured</h2> <p>Each article will combine:</p> <ul> <li>a plain-language mental model;</li> <li>the core system architecture;</li> <li>a small worked example or implementation sketch;</li> <li>failure modes and practical diagnostics;</li> <li>evaluation questions to ask before deployment.</li> </ul> <p>The aim is not to chase every new model release. It is to build a durable map of the ideas behind the current frontier—and a vocabulary for judging whatever comes next.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/train-validation-and-test-sets/">Train, Validation, and Test Sets: Measuring Generalization Correctly</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/bias-and-variance/">Bias and Variance: Understanding Underfitting and Overfitting</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/ml-basics-and-concepts-series/">The ML Basics and Concepts Series</a> </li> </ul> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Bao Gia Doan. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="external nofollow noopener">al-folio</a>. Hosted by GitHub Pages. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "publications",
+          description: "Selected publications in trustworthy AI, adversarial machine learning, and machine learning security.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-teaching",
+          title: "teaching",
+          description: "Teaching by Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/teaching/";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae of Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-contact",
+          title: "contact",
+          description: "Contact Dr. Bao Gia Doan at UNSW Sydney.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/contacts/";
+          },
+        },{id: "post-the-ai-frontiers-series-from-models-that-answer-to-systems-that-act",
+        
+          title: "The AI Frontiers Series: From Models That Answer to Systems That Act",
+        
+        description: "A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ai-frontiers-series/";
+          
+        },
+      },{id: "post-train-validation-and-test-sets-measuring-generalization-correctly",
+        
+          title: "Train, Validation, and Test Sets: Measuring Generalization Correctly",
+        
+        description: "How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/train-validation-and-test-sets/";
+          
+        },
+      },{id: "post-bias-and-variance-understanding-underfitting-and-overfitting",
+        
+          title: "Bias and Variance: Understanding Underfitting and Overfitting",
+        
+        description: "How bias, variance, and Bayes error explain a model&#39;s generalization error—and what training and validation results can tell us.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bias-and-variance/";
+          
+        },
+      },{id: "post-the-ml-basics-and-concepts-series",
+        
+          title: "The ML Basics and Concepts Series",
+        
+        description: "A guided series on the core ideas that shape how machine learning models learn, generalize, and fail.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ml-basics-and-concepts-series/";
+          
+        },
+      },{id: "news-presented-bayesian-learned-models-can-detect-adversarial-malware-for-free-https-link-springer-com-chapter-10-1007-978-3-031-70879-4-3-at-esorics-2024-in-bydgoszcz-poland",
+          title: 'Presented [“Bayesian Learned Models Can Detect Adversarial Malware for Free”](https://link.springer.com/chapter/10.1007/978-3-031-70879-4_3) at ESORICS 2024...',
+          description: "",
+          section: "News",},{id: "news-presented-on-the-credibility-of-backdoor-attacks-against-object-detectors-in-the-physical-world-https-arxiv-org-abs-2408-12122-at-acsac-2024-in-hawaii",
+          title: 'Presented [“On the Credibility of Backdoor Attacks Against Object Detectors in the Physical...',
+          description: "",
+          section: "News",},{id: "news-our-paper-bayesian-low-rank-learning-bella-a-practical-approach-to-bayesian-neural-networks-https-arxiv-org-abs-2407-20891-was-accepted-to-aaai-2025",
+          title: 'Our paper, [“Bayesian Low-Rank LeArning (Bella): A Practical Approach to Bayesian Neural Networks”](https://arxiv.org/abs/2407.20891),...',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-icml-2025-https-icml-cc-conferences-2025",
+          title: 'Serving on the Program Committee for [ICML 2025](https://icml.cc/Conferences/2025).',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-neurips-https-neurips-cc",
+          title: 'Serving on the Program Committee for [NeurIPS](https://neurips.cc/).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-the-aaai-2026-special-track-on-ai-alignment-https-aaai-org-conference-aaai-aaai-26-aia-call",
+          title: 'Serving as a Program Committee member for the [AAAI 2026 Special Track on...',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-iclr-2026-https-iclr-cc-conferences-2026",
+          title: 'Serving as a Program Committee member for [ICLR 2026](https://iclr.cc/Conferences/2026).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-aaai-27-https-aaai-org-conference-aaai-aaai-27",
+          title: 'Serving as a Program Committee member for [AAAI-27](https://aaai.org/conference/aaai/aaai-27/).',
+          description: "",
+          section: "News",},{id: "news-attended-adstar-2026-https-www-dst-defence-gov-au-event-adstar-2026-australian-defence-science-technology-and-research-summit-in-adelaide-australia-from-4-6-august-2026",
+          title: 'Attended [ADSTAR 2026](https://www.dst.defence.gov.au/event/adstar-2026-australian-defence-science-technology-and-research-summit) in Adelaide, Australia, from 4–6 August 2026.',
+          description: "",
+          section: "News",},{id: "news-our-paper-didact-a-cross-domain-capability-discovery-system-for-defence-https-arxiv-org-abs-2606-06942-was-accepted-to-cikm-2026-https-cikm2026-diag-uniroma1-it",
+          title: 'Our paper, [“Didact: A Cross-Domain Capability Discovery System for Defence”](https://arxiv.org/abs/2606.06942), was accepted to...',
+          description: "",
+          section: "News",},{id: "news-our-paper-a-benchmark-construction-and-evaluation-framework-for-specialist-domains-case-study-on-defense-related-documents-https-arxiv-org-abs-2604-17943-was-accepted-as-a-main-paper-at-emnlp-2026-https-2026-emnlp-org-in-budapest-hungary",
+          title: 'Our paper, [“A Benchmark Construction and Evaluation Framework for Specialist Domains: Case Study...',
+          description: "",
+          section: "News",},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/Bao_Gia_Doan_CV.pdf", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=IKf830cAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/baogiadoan", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> <script defer src="/assets/al_email_protect/js/email-protect.js"></script> </body> </html>

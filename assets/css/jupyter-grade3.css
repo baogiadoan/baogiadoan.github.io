@@ -542,7 +542,7 @@ hr {
   font-size: 11pt !important;
 }
 
-
+audio,
 video {
   display: inline;
   vertical-align: middle;
