@@ -39,19 +39,25 @@ latest_posts:
   }
 </style>
 
-I am a **machine learning researcher** and Postdoctoral Research Fellow. My research
-specialises in the robustness and trustworthiness of deep neural networks, from
-convolutional neural networks to large language models and transformer architectures.
+I am an **AI researcher** and Postdoctoral Research Fellow at UNSW Sydney. I build and
+evaluate reliable language-model systems for specialist domains, particularly where
+labelled data and established benchmarks are scarce. My work spans retrieval-augmented
+generation, domain adaptation, synthetic data generation, neural information retrieval,
+and the evaluation of coverage, faithfulness, and hallucination.
 
-My work in adversarial machine learning develops attack and defence mechanisms for
-threats including adversarial examples, data poisoning, model inversion, and backdoor
-attacks. It spans both _machine learning for security_ and _security for machine
-learning_.
+My latest research introduces
+[DoRA, a benchmark construction and evaluation framework for specialist domains](https://arxiv.org/abs/2604.17943),
+accepted as a main paper at [EMNLP 2026](https://2026.emnlp.org/). DoRA turns small
+collections of specialist documents into auditable training and evaluation data for RAG
+systems. Using defence as a high-stakes case study, it investigates how open-source LLMs
+can be adapted and evaluated under domain shift while remaining grounded in evidence.
 
-I also investigate privacy-preserving techniques such as differential privacy and
-federated learning. More recently, I have been building secure retrieval-augmented
-generation systems with open-source LLMs, addressing prompt injection, retrieval
-poisoning, hallucination mitigation, and trustworthy AI deployment.
+My previous research focused on adversarial machine learning and the robustness of deep
+neural networks, including adversarial examples, data poisoning, backdoor attacks, and
+privacy-preserving techniques such as differential privacy and federated learning.
+
+More broadly, I am interested in trustworthy AI deployment, efficient adaptation of
+open-source models, and robust evaluation for knowledge-intensive applications.
 
 ## Current position
 
