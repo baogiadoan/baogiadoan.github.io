@@ -143,7 +143,7 @@ lsi: false # produce an index for related posts
 
 # Pagination
 pagination:
-  enabled: true
+  enabled: false # the main blog index groups all posts beneath their topics
 
 related_blog_posts:
   enabled: true

@@ -5,6 +5,7 @@ date: 2026-08-14 08:00:00 +1000
 description: A guided series on the core ideas that shape how machine learning models learn, generalize, and fail.
 tags: [machine-learning, fundamentals, tutorial]
 categories: ["ML Basics and Concepts"]
+series_index: true
 related_posts: true
 ---
 

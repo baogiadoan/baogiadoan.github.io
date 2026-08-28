@@ -5,6 +5,7 @@ date: 2026-08-20 09:00:00 +1000
 description: A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety.
 tags: [artificial-intelligence, agentic-ai, llm, emerging-technology]
 categories: ["AI Frontiers"]
+series_index: true
 toc:
   beginning: true
 related_posts: true
