@@ -35,16 +35,17 @@ Each post will return to four questions:
 3. How do we know whether it works reliably outside a demo?
 4. What new costs, risks, or failure modes does it introduce?
 
+## Reading order
+
+1. [What Makes an AI System Agentic?]({% post_url 2026-09-02-what-makes-an-ai-system-agentic %})
+
+   How models, workflows, and agents differ; how the agent feedback loop works; and
+   how to reason about autonomy, tools, verification, evaluation, and control.
+
 ## Planned topics
 
 The roadmap is provisional: the field changes quickly, and the order may evolve as
 new techniques mature.
-
-### 1. What makes an AI system agentic?
-
-We will begin by separating **models**, **workflows**, and **agents**. The post will
-introduce the basic agent loop—observe, reason, act, and inspect the result—and show
-why autonomy is a spectrum rather than a binary label.
 
 ### 2. Reasoning and inference-time computation
 
