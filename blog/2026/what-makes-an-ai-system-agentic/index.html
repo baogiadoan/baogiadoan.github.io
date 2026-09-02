@@ -1,0 +1,267 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> What Makes an AI System Agentic? | Dr. Bao Gia Doan </title> <meta name="author" content="Bao Gia Doan"> <meta name="description" content="A practical guide to the difference between models, workflows, and agents—and to the feedback loop, tools, state, and safeguards that make agency possible."> <meta name="keywords" content="trustworthy AI, adversarial machine learning, machine learning security, retrieval-augmented generation, RAG, large language models"> <meta property="og:site_name" content="Dr. Bao Gia Doan"> <meta property="og:type" content="article"> <meta property="og:title" content="Dr. Bao Gia Doan | What Makes an AI System Agentic?"> <meta property="og:url" content="https://www.baodoan.net/blog/2026/what-makes-an-ai-system-agentic/"> <meta property="og:description" content="A practical guide to the difference between models, workflows, and agents—and to the feedback loop, tools, state, and safeguards that make agency possible."> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="What Makes an AI System Agentic?"> <meta name="twitter:description" content="A practical guide to the difference between models, workflows, and agents—and to the feedback loop, tools, state, and safeguards that make agency possible."> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Bao Gia Doan"
+        },
+        "url": "https://www.baodoan.net/blog/2026/what-makes-an-ai-system-agentic/",
+        "@type": "BlogPosting",
+        "description": "A practical guide to the difference between models, workflows, and agents—and to the feedback loop, tools, state, and safeguards that make agency possible.",
+        "headline": "What Makes an AI System Agentic?",
+        
+        "sameAs": [null,"https://github.com/baogiadoan","https://www.linkedin.com/in/baogiadoan","https://scholar.google.com/citations?user=IKf830cAAAAJ","https://twitter.com/baogiadoan"],
+        
+        "name": "Bao Gia Doan",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%A4%96&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://www.baodoan.net/blog/2026/what-makes-an-ai-system-agentic/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link rel="stylesheet" href="/assets/al_email_protect/css/email-protect.css"> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Dr. Bao Gia Doan </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/teaching/">teaching </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/contacts/">contact </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">What Makes an AI System Agentic?</h1> <p class="post-meta"> Created on September 01, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/artificial-intelligence"> <i class="fa-solid fa-hashtag fa-sm"></i> artificial-intelligence</a>   <a href="/blog/tag/agentic-ai"> <i class="fa-solid fa-hashtag fa-sm"></i> agentic-ai</a>   <a href="/blog/tag/llm"> <i class="fa-solid fa-hashtag fa-sm"></i> llm</a>   <a href="/blog/tag/ai-agents"> <i class="fa-solid fa-hashtag fa-sm"></i> ai-agents</a>   <a href="/blog/tag/emerging-technology"> <i class="fa-solid fa-hashtag fa-sm"></i> emerging-technology</a>   ·   <a href="/blog/category/ai-frontiers"> <i class="fa-solid fa-tag fa-sm"></i> AI Frontiers</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"> <a href="#models-workflows-and-agents">Models, workflows, and agents</a> <ul> <li class="toc-entry toc-h3"><a href="#a-model-produces-an-output">A model produces an output</a></li> <li class="toc-entry toc-h3"><a href="#a-workflow-follows-a-path-chosen-in-advance">A workflow follows a path chosen in advance</a></li> <li class="toc-entry toc-h3"><a href="#an-agent-chooses-part-of-the-path">An agent chooses part of the path</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#the-agent-loop">The agent loop</a></li> <li class="toc-entry toc-h2"> <a href="#the-components-that-make-agency-possible">The components that make agency possible</a> <ul> <li class="toc-entry toc-h3"><a href="#a-goal">A goal</a></li> <li class="toc-entry toc-h3"><a href="#a-policy-for-choosing-the-next-action">A policy for choosing the next action</a></li> <li class="toc-entry toc-h3"><a href="#tools-and-an-environment">Tools and an environment</a></li> <li class="toc-entry toc-h3"><a href="#state-and-memory">State and memory</a></li> <li class="toc-entry toc-h3"><a href="#feedback-and-verification">Feedback and verification</a></li> <li class="toc-entry toc-h3"><a href="#a-stopping-rule">A stopping rule</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#agency-is-a-spectrum">Agency is a spectrum</a></li> <li class="toc-entry toc-h2"> <a href="#a-worked-example-investigating-a-failing-test">A worked example: investigating a failing test</a> <ul> <li class="toc-entry toc-h3"><a href="#step-1-localize-the-failure">Step 1: localize the failure</a></li> <li class="toc-entry toc-h3"><a href="#step-2-compare-expectation-with-implementation">Step 2: compare expectation with implementation</a></li> <li class="toc-entry toc-h3"><a href="#step-3-gather-discriminating-evidence">Step 3: gather discriminating evidence</a></li> <li class="toc-entry toc-h3"><a href="#step-4-stop-at-the-authority-boundary">Step 4: stop at the authority boundary</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#where-agentic-systems-fail">Where agentic systems fail</a> <ul> <li class="toc-entry toc-h3"><a href="#error-compounds-across-steps">Error compounds across steps</a></li> <li class="toc-entry toc-h3"><a href="#the-system-optimizes-a-proxy">The system optimizes a proxy</a></li> <li class="toc-entry toc-h3"><a href="#tools-expose-untrusted-instructions">Tools expose untrusted instructions</a></li> <li class="toc-entry toc-h3"><a href="#state-becomes-stale-or-misleading">State becomes stale or misleading</a></li> <li class="toc-entry toc-h3"><a href="#the-loop-does-not-terminate-well">The loop does not terminate well</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#how-to-evaluate-an-agent">How to evaluate an agent</a> <ul> <li class="toc-entry toc-h3"><a href="#outcome-quality">Outcome quality</a></li> <li class="toc-entry toc-h3"><a href="#trajectory-quality">Trajectory quality</a></li> <li class="toc-entry toc-h3"><a href="#safety-and-control">Safety and control</a></li> <li class="toc-entry toc-h3"><a href="#efficiency-and-robustness">Efficiency and robustness</a></li> <li class="toc-entry toc-h3"><a href="#observability">Observability</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#when-not-to-use-an-agent">When not to use an agent</a></li> <li class="toc-entry toc-h2"><a href="#the-durable-mental-model">The durable mental model</a></li> </ul> </div> <hr> <div id="markdown-content"> <p><em>This is the first post in the <a href="/blog/2026/ai-frontiers-series/">AI Frontiers series</a>.</em></p> <p>An AI model can answer a question, classify an image, or predict the next token. An agent does something more: it uses a model inside a system that can pursue a goal, interact with an environment, inspect what happened, and decide what to do next.</p> <p>That distinction matters because the word <strong>agent</strong> is often applied to everything from a chatbot with one tool to a system that works for hours with little supervision. The label alone tells us very little. To understand how agentic a system really is, we need to ask what decisions it can make, what actions it can take, what feedback it receives, and where human control enters the loop.</p> <p>The useful question is therefore not simply “Is this an agent?” It is:</p> <blockquote> <p>How much of the path from a goal to an outcome can this system choose for itself?</p> </blockquote> <h2 id="models-workflows-and-agents">Models, workflows, and agents</h2> <p>These terms describe different layers of a system.</p> <h3 id="a-model-produces-an-output">A model produces an output</h3> <p>A model maps an input to an output. A language model might receive a prompt and generate text; a vision model might receive an image and return a set of detected objects. The model does not inherently know what happens after its output is produced.</p> <p>For example, consider the request:</p> <blockquote> <p>Summarize the three most important causes of this test failure.</p> </blockquote> <p>If the relevant logs are already in the prompt, a language model can produce an answer in one inference call. It has no need to inspect a repository, run a command, or verify the explanation. This is a model response, not an agent loop.</p> <h3 id="a-workflow-follows-a-path-chosen-in-advance">A workflow follows a path chosen in advance</h3> <p>A workflow connects models and programs through a predefined sequence. It might:</p> <ol> <li>retrieve documents;</li> <li>insert them into a prompt;</li> <li>ask a model for a summary;</li> <li>pass the result through a fixed validation step.</li> </ol> <p>The workflow can branch, retry, or call tools, but its control logic is mostly written by a developer. For the same kind of input, it follows the same designed path. This predictability is often an advantage: workflows are easier to test, cheaper to run, and simpler to audit.</p> <h3 id="an-agent-chooses-part-of-the-path">An agent chooses part of the path</h3> <p>An agent receives a goal and decides which intermediate steps are needed. It may select tools, form subgoals, revise a plan, or stop when it judges the task complete. Instead of merely filling one position in a fixed pipeline, the model helps control the pipeline itself.</p> <p>For the failing-test example, an agent might decide to:</p> <ol> <li>inspect the error message;</li> <li>search for the failing test and the code it covers;</li> <li>run that test in isolation;</li> <li>compare the current behavior with recent changes;</li> <li>form a hypothesis and test it;</li> <li>propose a fix only after the evidence is consistent.</li> </ol> <p>The developer did not prescribe every command or every branch. The agent selects the next action using the state it has observed so far.</p> <table> <thead> <tr> <th>System</th> <th>Who chooses the steps?</th> <th>Typical interaction pattern</th> </tr> </thead> <tbody> <tr> <td>Model</td> <td>The user or surrounding application</td> <td>Input, inference, output</td> </tr> <tr> <td>Workflow</td> <td>The developer, through predefined control flow</td> <td>Execute a known sequence or branch</td> </tr> <tr> <td>Agent</td> <td>The system, within developer-defined boundaries</td> <td>Observe, decide, act, inspect, and repeat</td> </tr> </tbody> </table> <p>The boundaries are not perfectly sharp. A workflow may contain one agentic decision, and an agent usually relies on deterministic workflow code for authentication, validation, and execution. The distinction is about where control over the next step resides, not which marketing label appears on the interface.</p> <h2 id="the-agent-loop">The agent loop</h2> <p>The central mechanism of an agent is a <strong>closed feedback loop</strong>:</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>goal
+  ↓
+observe state → choose an action → execute it → inspect the result
+      ↑                                        ↓
+      └──────── update state and repeat ───────┘
+</code></pre></div></div> <p>The important feature is not that the system can call a tool. It is that the result of one action becomes evidence for the next decision.</p> <p>An open-loop system produces a plan and executes it without checking whether its assumptions remain true. A closed-loop agent can notice that a search returned nothing, a command failed, or a proposed change broke another test. It can then adapt rather than continuing along an invalid path.</p> <p>A minimal control loop might look like this:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span> <span class="o">=</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="nf">finished</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">observation</span> <span class="o">=</span> <span class="nf">observe</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="nf">policy</span><span class="p">(</span><span class="n">goal</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nf">requires_approval</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="nf">request_human_decision</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="nf">execute</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="nf">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="nf">produce_outcome</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</code></pre></div></div> <p>Real systems need more detail, but this sketch exposes the essential pieces: a goal, observations, a decision policy, actions, state, stopping conditions, and control over consequential steps.</p> <h2 id="the-components-that-make-agency-possible">The components that make agency possible</h2> <h3 id="a-goal">A goal</h3> <p>The goal defines what the system is trying to achieve. “Explain this error” is a different objective from “make the test pass,” even if both begin with the same log. The second permits changes to the environment; the first may require only inspection.</p> <p>Vague goals create a hidden specification problem. “Improve the project” does not say which qualities matter, which trade-offs are acceptable, or when the work is complete. A capable agent can pursue a poorly specified objective very efficiently. That is not the same as producing the outcome the user wanted.</p> <h3 id="a-policy-for-choosing-the-next-action">A policy for choosing the next action</h3> <p>The policy maps the current state to a decision. In modern agentic systems, a language model often supplies much of this policy: it interprets the goal, weighs observations, and proposes the next tool call or response.</p> <p>The policy need not live entirely in the model. Rules can restrict which tools are available, a router can assign specialized tasks, and deterministic code can reject invalid arguments. Effective systems combine probabilistic model decisions with ordinary software controls.</p> <h3 id="tools-and-an-environment">Tools and an environment</h3> <p>Tools turn proposed actions into effects. They may read files, query databases, search documents, run code, control software, or call external services. The environment is whatever state those actions can observe or change.</p> <p>Tool access changes the nature of a model error. A fabricated sentence in a draft is an information-quality problem; a fabricated parameter sent to an external service can become a real side effect. Tool definitions, permissions, input validation, and isolation are therefore part of the agent’s design—not secondary infrastructure.</p> <h3 id="state-and-memory">State and memory</h3> <p>An agent needs enough state to connect an earlier observation to a later decision. This may include the conversation, tool results, a task plan, files, checkpoints, or a record of completed actions.</p> <p>Not all state should be placed into one ever-growing prompt. Systems often separate:</p> <ul> <li> <strong>working state</strong>, needed for the current step;</li> <li> <strong>task state</strong>, recording progress, decisions, and pending work;</li> <li> <strong>persistent memory</strong>, retained across tasks or sessions;</li> <li> <strong>external ground truth</strong>, such as the current contents of a file or database.</li> </ul> <p>This separation helps prevent stale summaries or remembered assumptions from being treated as more authoritative than the environment itself.</p> <h3 id="feedback-and-verification">Feedback and verification</h3> <p>An action result is useful only if the system can interpret it. A command’s exit code, a test report, a schema check, or a human review can provide evidence that an action worked. Without such feedback, repeated action is only automated guessing.</p> <p>Verification should be matched to the claim. A file existing does not prove that it contains the right change. One passing unit test does not prove that the application still works. A polished answer does not prove that its sources support its conclusion.</p> <h3 id="a-stopping-rule">A stopping rule</h3> <p>An agent also needs to know when to stop. Possible stopping conditions include:</p> <ul> <li>the requested artifact exists and passes specified checks;</li> <li>the answer meets an explicit quality threshold;</li> <li>no safe action can make further progress;</li> <li>a time, cost, or step budget has been reached;</li> <li>human input or approval is required.</li> </ul> <p>“Stop when the model feels done” is rarely strong enough. Good stopping rules are tied to observable evidence and include a safe way to report incomplete work.</p> <h2 id="agency-is-a-spectrum">Agency is a spectrum</h2> <p>Autonomy is not an on/off property. A system can be agentic along several dimensions:</p> <table> <thead> <tr> <th>Dimension</th> <th>Lower agency</th> <th>Higher agency</th> </tr> </thead> <tbody> <tr> <td>Goal formation</td> <td>Receives a narrow, explicit task</td> <td>Creates or prioritizes subgoals</td> </tr> <tr> <td>Planning</td> <td>Executes a supplied plan</td> <td>Decomposes and revises the plan</td> </tr> <tr> <td>Tool selection</td> <td>Uses one predetermined tool</td> <td>Chooses among many tools</td> </tr> <tr> <td>Time horizon</td> <td>Takes one step</td> <td>Works across many dependent steps</td> </tr> <tr> <td>Environmental reach</td> <td>Reads isolated context</td> <td>Changes external systems</td> </tr> <tr> <td>Human involvement</td> <td>Requests approval at most decision points</td> <td>Proceeds independently within broad limits</td> </tr> <tr> <td>Recovery</td> <td>Stops after failure</td> <td>Diagnoses, retries, rolls back, or takes a new path</td> </tr> </tbody> </table> <p>A system may rank high on one dimension and low on another. A research assistant may plan and browse independently but have read-only access. A deployment workflow may follow a fixed plan yet be able to make highly consequential changes. Risk depends on both autonomy and the impact of available actions.</p> <p>This is why counting model calls or tools is a weak measure of agency. A loop with ten fixed calls may be less agentic than a single decision that chooses whether to send, delete, purchase, or publish.</p> <h2 id="a-worked-example-investigating-a-failing-test">A worked example: investigating a failing test</h2> <p>Suppose an agent receives the goal: “Find the cause of this failing test and propose a minimal fix, but do not modify the repository.”</p> <p>Its initial state contains the goal, the error output, the repository location, and a read-only tool policy.</p> <h3 id="step-1-localize-the-failure">Step 1: localize the failure</h3> <p>The agent searches for the test name and reads the surrounding test. The result shows that the expected value comes from a configuration file.</p> <p>This changes the state: instead of broadly searching the codebase, the agent now has a specific dependency to inspect.</p> <h3 id="step-2-compare-expectation-with-implementation">Step 2: compare expectation with implementation</h3> <p>It reads the configuration loader and finds that a default value changed. It does not yet conclude that the change is a bug; the test could be outdated.</p> <h3 id="step-3-gather-discriminating-evidence">Step 3: gather discriminating evidence</h3> <p>The agent examines documentation and recent changes, then runs the failing test in isolation. A second test confirms that the new default is intentional.</p> <p>The original hypothesis—an implementation regression—is weakened. The agent revises its plan and checks whether the failing expectation should be updated instead.</p> <h3 id="step-4-stop-at-the-authority-boundary">Step 4: stop at the authority boundary</h3> <p>The evidence now supports a minimal test correction. Because the task authorized only inspection, the agent reports the proposed patch and its evidence rather than editing the file.</p> <p>This small example contains the core properties of agency: the system chooses actions, uses their results to update its beliefs, changes course when the evidence changes, and respects a boundary on what it may do.</p> <h2 id="where-agentic-systems-fail">Where agentic systems fail</h2> <p>The feedback loop adds capability, but it also creates new failure modes.</p> <h3 id="error-compounds-across-steps">Error compounds across steps</h3> <p>An incorrect assumption can shape a search, distort the interpretation of its result, and lead to further actions that make the original assumption appear consistent. The more steps a task contains, the more opportunities there are for errors to accumulate.</p> <p>Checkpoints and independent verification help break this chain. The agent should record what is observed separately from what is inferred and test important hypotheses with evidence that could prove them wrong.</p> <h3 id="the-system-optimizes-a-proxy">The system optimizes a proxy</h3> <p>If success is defined as “make the test pass,” an agent may weaken or delete the test. If success is “reduce support backlog,” it may close unresolved cases. The measured proxy improves while the real objective becomes worse.</p> <p>Constraints must therefore describe unacceptable paths, not only desired endpoints. Evaluation should inspect both the outcome and how it was achieved.</p> <h3 id="tools-expose-untrusted-instructions">Tools expose untrusted instructions</h3> <p>Documents, web pages, issue descriptions, and tool outputs can contain text that looks like a command to the model. An agent that treats all observed text as trusted instructions can be redirected away from the user’s goal or induced to reveal or modify information.</p> <p>Systems need a clear hierarchy of authority: external content is data to inspect, not permission to act. Sensitive tools should use narrow credentials, validated arguments, and explicit approval for consequential operations.</p> <h3 id="state-becomes-stale-or-misleading">State becomes stale or misleading</h3> <p>The agent may remember that a file contained one value even after another process has changed it. A compressed summary may omit a qualification that later becomes crucial. Persistent memory may carry an assumption from one context into another where it no longer applies.</p> <p>Before a consequential action, the agent should refresh the relevant state from its source of truth. Memory is a guide to what to inspect, not a substitute for inspection.</p> <h3 id="the-loop-does-not-terminate-well">The loop does not terminate well</h3> <p>An agent can repeat the same unsuccessful search, alternate between two plans, or keep polishing an already adequate result. Retries without new information consume time and money while creating the appearance of progress.</p> <p>Useful protections include bounded retries, step and cost limits, detection of repeated actions, progress checks, and escalation when the system cannot identify a genuinely new next step.</p> <h2 id="how-to-evaluate-an-agent">How to evaluate an agent</h2> <p>Evaluating only the final answer hides much of what can go wrong. Agent evaluation should cover the entire trajectory from goal to outcome.</p> <h3 id="outcome-quality">Outcome quality</h3> <p>Did the system complete the actual task? Is the result correct, complete, and useful? Whenever possible, use external checks—tests, validators, known answers, or human review—rather than asking the same model to judge its own work.</p> <h3 id="trajectory-quality">Trajectory quality</h3> <p>Were the actions relevant and supported by observations? Did the agent notice failed commands, revise weak hypotheses, avoid redundant work, and preserve important state? Two agents can reach the same answer through trajectories with very different costs and risks.</p> <h3 id="safety-and-control">Safety and control</h3> <p>Did the agent remain within its permissions? Did it distinguish reading from writing, ask before consequential actions, protect sensitive information, and stop safely when the goal conflicted with a constraint?</p> <h3 id="efficiency-and-robustness">Efficiency and robustness</h3> <p>How many steps, tokens, tool calls, and retries were required? Does performance remain stable when tool results arrive in a different order, one source is unavailable, the task is phrased differently, or irrelevant information is introduced?</p> <h3 id="observability">Observability</h3> <p>Can an operator reconstruct what the system observed, decided, executed, and verified? Useful traces include tool inputs and outputs, state transitions, approval decisions, errors, costs, and the evidence used to declare completion. Observability is essential for diagnosing failures that cannot be explained by the final response alone.</p> <h2 id="when-not-to-use-an-agent">When not to use an agent</h2> <p>Agency is valuable when the route to a goal cannot be completely specified in advance and feedback from the environment should determine the next step. It is less attractive when the task is stable, repeatable, and well understood.</p> <p>A deterministic workflow is usually preferable when:</p> <ul> <li>the sequence of operations is known;</li> <li>inputs and outputs can be validated with clear rules;</li> <li>consistency matters more than flexibility;</li> <li>actions are costly or difficult to reverse;</li> <li>the model would have little useful evidence on which to adapt.</li> </ul> <p>The best architecture is often hybrid. Let a model interpret ambiguous input or choose among safe options, while ordinary code enforces schemas, permissions, transactions, and invariants. Add autonomy only where it creates measurable value.</p> <h2 id="the-durable-mental-model">The durable mental model</h2> <p>An agent is not simply a more intelligent chatbot, nor is every program with a tool an agent. It is a goal-directed system in which a model participates in choosing actions, observes their consequences, updates state, and repeats within defined boundaries.</p> <p>Its capability comes from closing the loop between reasoning and the world. Its risk comes from exactly the same place.</p> <p>When assessing an “AI agent,” look past the label and ask:</p> <ol> <li>What goal is it optimizing?</li> <li>Which steps can it choose?</li> <li>What can it observe and change?</li> <li>How does it verify progress?</li> <li>When must it ask, stop, or hand control back?</li> </ol> <p>Those questions reveal far more than whether the system is called agentic. They show how the system actually works—and whether its autonomy is useful, reliable, and appropriately constrained.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/why-blog-why-now/">Why Blog? Why Now?</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/ai-frontiers-series/">The AI Frontiers Series: From Models That Answer to Systems That Act</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/train-validation-and-test-sets/">Train, Validation, and Test Sets: Measuring Generalization Correctly</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/bias-and-variance/">Bias and Variance: Understanding Underfitting and Overfitting</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/ml-basics-and-concepts-series/">The ML Basics and Concepts Series</a> </li> </ul> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Bao Gia Doan. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="external nofollow noopener">al-folio</a>. Hosted by GitHub Pages. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "publications",
+          description: "Selected publications in trustworthy AI, adversarial machine learning, and machine learning security.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-teaching",
+          title: "teaching",
+          description: "Teaching and student supervision by Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/teaching/";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae of Dr. Bao Gia Doan.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-contact",
+          title: "contact",
+          description: "Contact Dr. Bao Gia Doan at UNSW Sydney.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/contacts/";
+          },
+        },{id: "post-what-makes-an-ai-system-agentic",
+        
+          title: "What Makes an AI System Agentic?",
+        
+        description: "A practical guide to the difference between models, workflows, and agents—and to the feedback loop, tools, state, and safeguards that make agency possible.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/what-makes-an-ai-system-agentic/";
+          
+        },
+      },{id: "post-why-blog-why-now",
+        
+          title: "Why Blog? Why Now?",
+        
+        description: "Writing as a way to filter the noise, keep knowledge alive, and sharpen the mind in an age of abundant information and generative AI.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/why-blog-why-now/";
+          
+        },
+      },{id: "post-the-ai-frontiers-series-from-models-that-answer-to-systems-that-act",
+        
+          title: "The AI Frontiers Series: From Models That Answer to Systems That Act",
+        
+        description: "A roadmap for exploring agentic AI, reasoning, memory, tool use, multimodal systems, efficient models, evaluation, and safety.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ai-frontiers-series/";
+          
+        },
+      },{id: "post-train-validation-and-test-sets-measuring-generalization-correctly",
+        
+          title: "Train, Validation, and Test Sets: Measuring Generalization Correctly",
+        
+        description: "How to split data, prevent leakage, choose models, and obtain an honest estimate of performance on unseen examples.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/train-validation-and-test-sets/";
+          
+        },
+      },{id: "post-bias-and-variance-understanding-underfitting-and-overfitting",
+        
+          title: "Bias and Variance: Understanding Underfitting and Overfitting",
+        
+        description: "How bias, variance, and Bayes error explain a model&#39;s generalization error—and what training and validation results can tell us.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bias-and-variance/";
+          
+        },
+      },{id: "post-the-ml-basics-and-concepts-series",
+        
+          title: "The ML Basics and Concepts Series",
+        
+        description: "A guided series on the core ideas that shape how machine learning models learn, generalize, and fail.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ml-basics-and-concepts-series/";
+          
+        },
+      },{id: "news-presented-bayesian-learned-models-can-detect-adversarial-malware-for-free-https-link-springer-com-chapter-10-1007-978-3-031-70879-4-3-at-esorics-2024-in-bydgoszcz-poland",
+          title: 'Presented [“Bayesian Learned Models Can Detect Adversarial Malware for Free”](https://link.springer.com/chapter/10.1007/978-3-031-70879-4_3) at ESORICS 2024...',
+          description: "",
+          section: "News",},{id: "news-presented-on-the-credibility-of-backdoor-attacks-against-object-detectors-in-the-physical-world-https-arxiv-org-abs-2408-12122-at-acsac-2024-in-hawaii",
+          title: 'Presented [“On the Credibility of Backdoor Attacks Against Object Detectors in the Physical...',
+          description: "",
+          section: "News",},{id: "news-our-paper-bayesian-low-rank-learning-bella-a-practical-approach-to-bayesian-neural-networks-https-arxiv-org-abs-2407-20891-was-accepted-to-aaai-2025",
+          title: 'Our paper, [“Bayesian Low-Rank LeArning (Bella): A Practical Approach to Bayesian Neural Networks”](https://arxiv.org/abs/2407.20891),...',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-icml-2025-https-icml-cc-conferences-2025",
+          title: 'Serving on the Program Committee for [ICML 2025](https://icml.cc/Conferences/2025).',
+          description: "",
+          section: "News",},{id: "news-serving-on-the-program-committee-for-neurips-https-neurips-cc",
+          title: 'Serving on the Program Committee for [NeurIPS](https://neurips.cc/).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-the-aaai-2026-special-track-on-ai-alignment-https-aaai-org-conference-aaai-aaai-26-aia-call",
+          title: 'Serving as a Program Committee member for the [AAAI 2026 Special Track on...',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-iclr-2026-https-iclr-cc-conferences-2026",
+          title: 'Serving as a Program Committee member for [ICLR 2026](https://iclr.cc/Conferences/2026).',
+          description: "",
+          section: "News",},{id: "news-serving-as-a-program-committee-member-for-aaai-27-https-aaai-org-conference-aaai-aaai-27",
+          title: 'Serving as a Program Committee member for [AAAI-27](https://aaai.org/conference/aaai/aaai-27/).',
+          description: "",
+          section: "News",},{id: "news-attended-adstar-2026-https-www-dst-defence-gov-au-event-adstar-2026-australian-defence-science-technology-and-research-summit-in-adelaide-australia-from-4-6-august-2026",
+          title: 'Attended [ADSTAR 2026](https://www.dst.defence.gov.au/event/adstar-2026-australian-defence-science-technology-and-research-summit) in Adelaide, Australia, from 4–6 August 2026.',
+          description: "",
+          section: "News",},{id: "news-our-paper-didact-a-cross-domain-capability-discovery-system-for-defence-https-arxiv-org-abs-2606-06942-was-accepted-to-cikm-2026-https-cikm2026-diag-uniroma1-it",
+          title: 'Our paper, [“Didact: A Cross-Domain Capability Discovery System for Defence”](https://arxiv.org/abs/2606.06942), was accepted to...',
+          description: "",
+          section: "News",},{id: "news-our-paper-a-benchmark-construction-and-evaluation-framework-for-specialist-domains-case-study-on-defense-related-documents-https-arxiv-org-abs-2604-17943-was-accepted-as-a-main-paper-at-emnlp-2026-https-2026-emnlp-org-in-budapest-hungary",
+          title: 'Our paper, [“A Benchmark Construction and Evaluation Framework for Specialist Domains: Case Study...',
+          description: "",
+          section: "News",},{id: "news-i-will-serve-as-a-program-committee-member-for-iclr-2027-https-iclr-cc-conferences-2027",
+          title: 'I will serve as a Program Committee member for [ICLR 2027](https://iclr.cc/Conferences/2027).',
+          description: "",
+          section: "News",},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/pdf/Bao_Gia_Doan_CV.pdf", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/baogiadoan", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=IKf830cAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/baogiadoan", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> <script defer src="/assets/al_email_protect/js/email-protect.js"></script> </body> </html>
